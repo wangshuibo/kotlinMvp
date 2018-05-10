@@ -2,7 +2,6 @@ package com.wang.kotlinmvp.base.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.wang.kotlinmvp.api.Api
 
 
 /**
@@ -23,10 +22,9 @@ object NetWorkUtils {
      * @param paramContext
      * @return
      */
-    fun isNetConnected(paramContext: Api): Boolean {
+    fun isNetConnected(paramContext: Context): Boolean {
         val i = false
-        val localNetworkInfo = (paramContext
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo
+        val localNetworkInfo = (paramContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo
         return localNetworkInfo != null && localNetworkInfo.isAvailable
     }
 

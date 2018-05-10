@@ -3,6 +3,7 @@ package com.wang.kotlinmvp.api
 import android.os.Environment
 import android.util.Log
 import com.google.gson.GsonBuilder
+import com.wang.kotlinmvp.app.MyApp
 import com.wang.kotlinmvp.base.utils.NetWorkUtils
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,14 +23,6 @@ class Api {
     private var retrofit: Retrofit? = null
     private var apiService: ApiService? = null
 
-    //同步锁进一步优化,获取Api对象
-    companion object {
-        private val CACHE_ROOT_PATH = Environment.getExternalStorageDirectory().path + "/Android/kotlin/"
-        val HTTP_CACHE_PATH = CACHE_ROOT_PATH + "cache/"
-        val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-            Api()
-        }
-    }
 
     init {
         //拦截器日志
@@ -57,6 +50,14 @@ class Api {
         apiService = retrofit!!.create(ApiService::class.java)
     }
 
+    //同步锁进一步优化,获取Api对象
+    companion object {
+        private val CACHE_ROOT_PATH = Environment.getExternalStorageDirectory().path + "/Android/kotlin/"
+        private val HTTP_CACHE_PATH = CACHE_ROOT_PATH + "cache/"
+        val instance by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+            Api()
+        }
+    }
 
     // 增加头部信息
     private var headerInterceptor: Interceptor = Interceptor { chain ->
@@ -71,14 +72,14 @@ class Api {
     private class HttpCacheInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response? {
             var request = chain.request()
-            if (!NetWorkUtils.isNetConnected(instance)) {
+            if (!NetWorkUtils.isNetConnected(MyApp.instance)) {
                 request = request.newBuilder().cacheControl(CacheControl.FORCE_CACHE).build()
                 Log.d("Okhttp", "no network")
             }
 
             val originalResponse = chain.proceed(request)
             return when {
-                NetWorkUtils.isNetConnected(instance) -> {
+                NetWorkUtils.isNetConnected(MyApp.instance) -> {
                     // 有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
                     val cacheControl = request.cacheControl().toString()
                     originalResponse.newBuilder().header("Cache-Control", cacheControl).removeHeader("Pragma")
