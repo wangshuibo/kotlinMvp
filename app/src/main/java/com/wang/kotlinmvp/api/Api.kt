@@ -4,15 +4,14 @@ import android.os.Environment
 import android.util.Log
 import com.google.gson.GsonBuilder
 import com.wang.kotlinmvp.app.MyApp
+import com.wang.kotlinmvp.base.gson.GsonConverterFactory
 import com.wang.kotlinmvp.base.utils.NetWorkUtils
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
-
 
 /**
  * @author Mis Wang
@@ -22,7 +21,6 @@ import java.util.concurrent.TimeUnit
 class Api {
     private var retrofit: Retrofit? = null
     private var apiService: ApiService? = null
-
 
     init {
         //拦截器日志
@@ -50,7 +48,7 @@ class Api {
         apiService = retrofit!!.create(ApiService::class.java)
     }
 
-    //同步锁进一步优化,获取Api对象
+    //双重锁的检验,获取Api对象
     companion object {
         private val CACHE_ROOT_PATH = Environment.getExternalStorageDirectory().path + "/Android/kotlin/"
         private val HTTP_CACHE_PATH = CACHE_ROOT_PATH + "cache/"

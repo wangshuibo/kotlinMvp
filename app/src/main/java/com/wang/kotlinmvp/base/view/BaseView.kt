@@ -6,4 +6,19 @@ package com.wang.kotlinmvp.base.view
  * @fuction 基本View型 ：主要放所有视图逻辑的接口
  */
 interface BaseView {
+    /**
+     * 内嵌加载
+     * @param title 弹窗标题
+     */
+    fun showLoading(title: String)
+
+    /**
+     * 停止加载
+     */
+    fun stopLoading()
+
+    /**
+     * @param msg 错误信息
+     */
+    fun showErrorTip(msg: String)
 }
