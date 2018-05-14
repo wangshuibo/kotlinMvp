@@ -1,8 +1,7 @@
 package com.wang.kotlinmvp.base.rx
 
-import com.wang.kotlinmvp.base.bean.BaseBean
+import com.wang.kotlinmvp.base.bean.KotlinBean
 import com.wang.kotlinmvp.base.rx.errorbean.ApiException
-import com.wang.kotlinmvp.base.utils.ConstantUtil
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,14 +14,18 @@ import io.reactivex.schedulers.Schedulers
  * @fuction Observable转换器
  */
 object RxHelper {
-
-    fun <T> handleResult(): ObservableTransformer<BaseBean<T>, T> {
+    fun <T> handleResult(): ObservableTransformer<KotlinBean<T>, T> {
         return ObservableTransformer { upstream ->
             upstream.flatMap { result ->
-                if (ConstantUtil.SUCCESS.equals(result.status.code)) {
-                    createObservable(result.content);
+                //                if (ConstantUtil.SUCCESS.equals(result.status.code)) {
+//                    createObservable(result.content);
+//                } else {
+//                    Observable.error(ApiException(result.status.code, result.status.message));
+//                }
+                if (!result.error) {
+                    createObservable(result.results);
                 } else {
-                    Observable.error(ApiException(result.status.code, result.status.message));
+                    Observable.error(ApiException("-1", "错误数据"));
                 }
             }.subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())

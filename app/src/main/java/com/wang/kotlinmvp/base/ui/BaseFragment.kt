@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.wang.kotlinmvp.R
 import com.wang.kotlinmvp.base.presenter.BasePresenter
 
@@ -28,11 +26,10 @@ abstract class BaseFragment<out P : BasePresenter<*, *>> : Fragment() {
     private var isDataAdd = false
     //非ViewPager
     private var isNoViewpager = false
-    private var mUnbinder: Unbinder? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         rootView = inflater.inflate(getLayoutResource(), container, false)
-        mUnbinder = ButterKnife.bind(this, rootView!!)
         this.mPresenter = initPresenter()
         if (!isNoViewpager && !isViewVisiable && !isDataAdd) {
             load()
@@ -118,11 +115,8 @@ abstract class BaseFragment<out P : BasePresenter<*, *>> : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (mUnbinder != null)
-            mUnbinder!!.unbind()
         if (mPresenter != null)
             mPresenter!!.onDestroy()
-        this.mUnbinder = null
         this.mPresenter = null
         isPrepared = false
         isViewVisiable = false

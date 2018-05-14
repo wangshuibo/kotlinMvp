@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import butterknife.ButterKnife
-import butterknife.Unbinder
 import com.wang.kotlinmvp.R
 import com.wang.kotlinmvp.base.presenter.BasePresenter
 
@@ -19,13 +17,11 @@ import com.wang.kotlinmvp.base.presenter.BasePresenter
 abstract class BaseActivity<out P : BasePresenter<*, *>> : AppCompatActivity() {
     private var mPresenter: P? = null
     protected var mContext: Context? = null
-    private var mUnbinder: Unbinder? = null
     private var imm: InputMethodManager? = null//软键盘管理
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (getLayoutId() != 0)
             setContentView(this.getLayoutId())
-        mUnbinder = ButterKnife.bind(this)
         this.mContext = this
         this.mPresenter = initPresenter()
         this.initView()
@@ -103,6 +99,11 @@ abstract class BaseActivity<out P : BasePresenter<*, *>> : AppCompatActivity() {
         hideSoftKeyBoard()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishActivityAnim();
+    }
+
     /**
      * 销毁
      */
@@ -113,9 +114,7 @@ abstract class BaseActivity<out P : BasePresenter<*, *>> : AppCompatActivity() {
             this.mPresenter!!.onDestroy()
             this.mPresenter = null
         }
-        //清除注解
-        if (mUnbinder != null)
-            mUnbinder!!.unbind()
+
     }
 
     /**

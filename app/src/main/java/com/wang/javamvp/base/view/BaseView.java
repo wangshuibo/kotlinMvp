@@ -1,24 +1,25 @@
-package com.wang.kotlinmvp.base.view
+package com.wang.javamvp.base.view;
 
 /**
  * @author Mis Wang
- * @date  2018/5/10  11:49
+ * @date 2018/5/14  13:50
  * @fuction 基本View型 ：主要放所有视图逻辑的接口
  */
-interface BaseView {
+public interface BaseView {
     /**
      * 内嵌加载
+     *
      * @param title 弹窗标题
      */
-    fun showLoading(title: String)
+    void showLoading(String title);
 
     /**
      * 停止加载
      */
-    fun stopLoading()
+    void stopLoading();
 
     /**
      * @param msg 错误信息
      */
-    fun showErrorTip(code: String,msg: String)
+    void showErrorTip(String code, String msg);
 }

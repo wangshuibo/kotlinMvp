@@ -3,9 +3,8 @@ package com.wang.kotlinmvp.base.gson
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
-import com.wang.kotlinmvp.base.bean.BaseBean
+import com.wang.kotlinmvp.base.bean.KotlinBean
 import com.wang.kotlinmvp.base.rx.errorbean.ApiException
-import com.wang.kotlinmvp.base.utils.ConstantUtil
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import java.io.ByteArrayInputStream
@@ -24,13 +23,13 @@ internal class GsonResponseBodyConverter<T>(private val mGson: Gson, private val
     @Throws(IOException::class)
     override fun convert(value: ResponseBody): T {
         val response = value.string()
-        val baseBean = mGson.fromJson(response, BaseBean::class.java)
-        // 关注的重点,自定义响应码中非0000的情况,一律抛出ApiException异常
+        val baseBean = mGson.fromJson(response, KotlinBean::class.java)
+        // 关注的重点,自定义响应码中true的情况,一律抛出ApiException异常
         // 这样,我们就成功的将该异常交给onError()去处理了
-        if (ConstantUtil.SUCCESS != baseBean.status.code) {
-            Log.e("ApiError==", baseBean.status.message + "==")
+        if (baseBean.error) {
+            Log.e("ApiError==", "error=true")
             value.close()
-            throw ApiException(baseBean.status.code, baseBean.status.message)
+            throw ApiException("-1", "错误数据")
         } else {
             val mediaType = value.contentType()
             val charset = if (mediaType != null) mediaType.charset(UTF_8) else UTF_8
@@ -40,6 +39,22 @@ internal class GsonResponseBodyConverter<T>(private val mGson: Gson, private val
             value.use { _ ->
                 return adapter.read(jsonReader)
             }
+//        val baseBean = mGson.fromJson(response, BaseBean::class.java)
+//        // 关注的重点,自定义响应码中非0000的情况,一律抛出ApiException异常
+//        // 这样,我们就成功的将该异常交给onError()去处理了
+//        if (ConstantUtil.SUCCESS != baseBean.status.code) {
+//            Log.e("ApiError==", baseBean.status.message + "==")
+//            value.close()
+//            throw ApiException(baseBean.status.code, baseBean.status.message)
+//        } else {
+//            val mediaType = value.contentType()
+//            val charset = if (mediaType != null) mediaType.charset(UTF_8) else UTF_8
+//            val bis = ByteArrayInputStream(response.toByteArray())
+//            val reader = InputStreamReader(bis, charset)
+//            val jsonReader = mGson.newJsonReader(reader)
+//            value.use { _ ->
+//                return adapter.read(jsonReader)
+//            }
         }
     }
 
