@@ -20,10 +20,9 @@ import kotlinx.android.synthetic.main.act_kotlin.*
  */
 class KotlinActivity : BaseActivity<MainPresenter>(), MainView {
 
-
     //适配器
-    var adapter: MainAdapter? = null
-    var datas: MutableList<ResultsBean>? = null
+    private var adapter: MainAdapter? = null
+    private var datas: MutableList<ResultsBean>? = null
     override fun showLoading(title: String) {
 
     }
@@ -85,7 +84,7 @@ class KotlinActivity : BaseActivity<MainPresenter>(), MainView {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent?.context).inflate(R.layout.item_rv, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rv, parent, false)
             return ViewHolder(view)
         }
 

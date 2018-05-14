@@ -90,13 +90,11 @@ public class JavaActivity extends BaseActivity<JavaPresenter> implements JavaVie
     /**
      * description：RecyclerView的adapter
      */
-    class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder>
-
-    {
+    class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         private Context context;
         private List<ResultsBean> newsList;
 
-        public MainAdapter(Context context, List<ResultsBean> newsList) {
+        MainAdapter(Context context, List<ResultsBean> newsList) {
             this.context = context;
             this.newsList = newsList;
         }
@@ -122,13 +120,10 @@ public class JavaActivity extends BaseActivity<JavaPresenter> implements JavaVie
             return newsList.size();
         }
 
-
-        class ViewHolder extends RecyclerView.ViewHolder
-
-        {
+        class ViewHolder extends RecyclerView.ViewHolder {
             TextView tvTitle;
 
-            public ViewHolder(View itemView) {
+            ViewHolder(View itemView) {
                 super(itemView);
                 tvTitle = itemView.findViewById(R.id.item_rv_title);
             }
@@ -139,7 +134,7 @@ public class JavaActivity extends BaseActivity<JavaPresenter> implements JavaVie
          * 添加数据
          */
         void addData(List<ResultsBean> dataList) {
-            if (dataList.size() == 0) {
+            if (dataList == null) {
                 return;
             }
             newsList.addAll(dataList);

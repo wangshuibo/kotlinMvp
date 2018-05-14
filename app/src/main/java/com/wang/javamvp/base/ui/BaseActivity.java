@@ -17,7 +17,7 @@ import butterknife.Unbinder;
 /**
  * @author Mis Wang
  * @date 2018/5/14  14:15
- * @fuction 统一Activity管理->基类 [getLayoutId()] 布局 [initPresenter()]初始化Presenter [initView()] 初始化视图
+ * @fuction 统一Activity管理->基类 {@link #getLayoutId()} 布局 {@link #initPresenter()}初始化Presenter {@link #initView()} 初始化视图
  */
 public abstract class BaseActivity<P extends BasePresenter<?, ?>> extends AppCompatActivity {
     private P mPresenter = null;
