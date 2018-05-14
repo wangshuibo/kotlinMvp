@@ -139,7 +139,6 @@ public class JavaActivity extends BaseActivity<JavaPresenter> implements JavaVie
          * 添加数据
          */
         void addData(List<ResultsBean> dataList) {
-            //这里不用像java一样判断空了,这里肯定是非空的
             if (dataList.size() == 0) {
                 return;
             }
