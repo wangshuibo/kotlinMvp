@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.act_kotlin.*
 class KotlinActivity : BaseActivity<MainPresenter>(), MainView {
 
 
-
     //适配器
     var adapter: MainAdapter? = null
     var datas: MutableList<ResultsBean>? = null

@@ -82,12 +82,14 @@ abstract class BaseActivity<out P : BasePresenter<*, *>> : AppCompatActivity() {
      * 如果软键盘是打开的话，就隐藏
      */
     private fun hideSoftKeyBoard() {
-        val rootView: View = currentFocus
-        if (this.imm == null) {
-            this.imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        }
-        if (this.imm != null) {
-            this.imm!!.hideSoftInputFromWindow(rootView.windowToken, 2)
+        if (currentFocus != null) {
+            val rootView: View = currentFocus
+            if (this.imm == null) {
+                this.imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            }
+            if (this.imm != null) {
+                this.imm!!.hideSoftInputFromWindow(rootView.windowToken, 2)
+            }
         }
     }
 

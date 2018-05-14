@@ -90,13 +90,14 @@ public abstract class BaseActivity<P extends BasePresenter<?, ?>> extends AppCom
      * 如果软键盘是打开的话，就隐藏
      */
     private void hideSoftKeyBoard() {
-        View rootView = getCurrentFocus();
-        if (this.imm == null) {
-            this.imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        }
-        if (this.imm != null) {
-            assert rootView != null;
-            this.imm.hideSoftInputFromWindow(rootView.getWindowToken(), 2);
+        if (getCurrentFocus() != null) {
+            View rootView = getCurrentFocus();
+            if (this.imm == null) {
+                this.imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            }
+            if (this.imm != null) {
+                this.imm.hideSoftInputFromWindow(rootView.getWindowToken(), 2);
+            }
         }
     }
 
